@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/react-expense-tracker/static/js/main.851aa520.js",
+    "static/js/787.afd34582.chunk.js": "/react-expense-tracker/static/js/787.afd34582.chunk.js",
+    "index.html": "/react-expense-tracker/index.html",
+    "main.851aa520.js.map": "/react-expense-tracker/static/js/main.851aa520.js.map",
+    "787.afd34582.chunk.js.map": "/react-expense-tracker/static/js/787.afd34582.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.851aa520.js"
+  ]
+}
