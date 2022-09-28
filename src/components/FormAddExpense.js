@@ -1,7 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { nanoid } from "nanoid";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { ExpenseContext } from "../context/ExpenseContext";
 
 export default function FormAddExpense(props) {
@@ -11,7 +13,7 @@ export default function FormAddExpense(props) {
     expenseCost: "",
   });
 
-  const { expenseDetails, setExpenseDetails } = useContext(ExpenseContext);
+  const { setExpenseDetails } = useContext(ExpenseContext);
 
   const handleNewExpense = (event) => {
     const name = event.target.name;
@@ -20,6 +22,12 @@ export default function FormAddExpense(props) {
     setNewExpense((prevNewExpense) => {
       return { ...prevNewExpense, [name]: value, expenseId: nanoid() };
     });
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      addToExpenseList();
+    }
   };
 
   function addToExpenseList() {
@@ -38,34 +46,48 @@ export default function FormAddExpense(props) {
   }
 
   return (
-    <Form className="row align-items-center p-lg-1 p-sm-2">
-      <Form.Group controlId="formBasicText" className="col-lg-5 col-sm-12">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="expenseName"
-          value={newExpense.expenseName}
-          onChange={handleNewExpense}
-          required
-        ></Form.Control>
-      </Form.Group>
-      <Form.Group controlId="formBasicNumber" className="col-lg-5 col-sm-12">
-        <Form.Label>Cost</Form.Label>
-        <Form.Control
-          type="number"
-          name="expenseCost"
-          value={newExpense.expenseCost}
-          onChange={handleNewExpense}
-          required
-        ></Form.Control>
-      </Form.Group>
-      <br />
-      <Button
-        className="mt-4 m-lg-0 col-lg-2 align-self-end col-sm-12 bg-primary bg-gradient fw-bold"
-        onClick={() => addToExpenseList()}
-      >
-        Save expense
-      </Button>
+    <Form className="p-4 col-12">
+      <Row>
+        <Col lg="6" sm="12">
+          <Form.Group controlId="formBasicText">
+            <Form.Label>Name *</Form.Label>
+            <Form.Control
+              type="text"
+              name="expenseName"
+              value={newExpense.expenseName}
+              onChange={handleNewExpense}
+              onKeyPress={handleKeyPress}
+              required
+            ></Form.Control>
+          </Form.Group>
+        </Col>
+        <Col lg="3" sm="12">
+          <Form.Group controlId="formBasicNumber">
+            <Form.Label>Cost (USD $) *</Form.Label>
+            <Form.Control
+              type="number"
+              name="expenseCost"
+              value={newExpense.expenseCost}
+              onChange={handleNewExpense}
+              onKeyPress={handleKeyPress}
+              required
+            ></Form.Control>
+          </Form.Group>
+        </Col>
+        <Col
+          lg="3"
+          sm="12"
+          className="d-flex flex-column justify-content-between"
+        >
+          <br />
+          <Button
+            className="bg-primary bg-gradient fw-bold"
+            onClick={() => addToExpenseList()}
+          >
+            Save expense
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 }

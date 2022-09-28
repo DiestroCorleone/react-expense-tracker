@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { ExpenseContext } from "./context/ExpenseContext";
 import Header from "./components/Header";
-import RenderBudgets from "./components/RenderBudgets";
-import ExpenseListContainer from "./components/ExpenseListContainer";
+import RenderBudgets from "./components/BudgetComponents/RenderBudgets";
+import ExpenseListContainer from "./components/ExpenseListComponents/ExpenseListContainer";
 import FormAddExpense from "./components/FormAddExpense";
 import ModalComponent from "./components/ModalComponent";
 import Footer from "./components/Footer";
+import PdfCreatorButton from "./components/PdfCreatorComponents/PdfCreatorButton";
 
 function App() {
-  const [expenseDetails, setExpenseDetails] = useState({
-    budget: 0,
-    remaining: 0,
-    spent: 0,
-    expenseList: [],
-  });
+  const [expenseDetails, setExpenseDetails] = useState(
+    JSON.parse(localStorage.getItem("expenseDetails")) || {
+      budget: 0,
+      remaining: 0,
+      spent: 0,
+      expenseList: [],
+    }
+  );
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -35,20 +38,35 @@ function App() {
       });
     }
 
-    return () => {
-      setTimeout(() => calcExpenseTest(), 10);
-    };
+    // setTimeout(() => calcExpenseTest(), 10);
+    calcExpenseTest();
+  }, [expenseDetails.expenseList, expenseDetails.budget]);
+
+  useEffect(() => {
+    function updateLocalStorage() {
+      localStorage.setItem("expenseDetails", JSON.stringify(expenseDetails));
+      console.log("Se actualizó localstorage");
+    }
+
+    setTimeout(() => updateLocalStorage(), 10);
   }, [expenseDetails]);
 
+  const clearStorage = () => localStorage.clear();
+
   return (
-    <Container fluid className="bg-light bg-gradient p-lg-5 p-sm-4">
+    <Container
+      fluid
+      className="bg-light bg-gradient p-4 full-height d-flex flex-column justify-content-between"
+    >
       <ExpenseContext.Provider value={{ expenseDetails, setExpenseDetails }}>
         <ModalComponent showModal={showModal} setShowModal={setShowModal} />
         <Header />
         <RenderBudgets showModal={showModal} setShowModal={setShowModal} />
         <ExpenseListContainer />
+        {expenseDetails.expenseList.length > 0 && <PdfCreatorButton />}
         <FormAddExpense />
       </ExpenseContext.Provider>
+      <button onClick={() => clearStorage()}>Clear Storage</button>
       <Footer />
     </Container>
   );

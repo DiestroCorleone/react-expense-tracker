@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Table from "react-bootstrap/Table";
-import { ExpenseContext } from "../context/ExpenseContext";
+import { ExpenseContext } from "../../context/ExpenseContext";
 
 export default function ExpenseList(props) {
   const { expenseDetails, setExpenseDetails } = useContext(ExpenseContext);
@@ -37,8 +37,14 @@ export default function ExpenseList(props) {
     });
 
   return (
-    <Table striped bordered hover>
-      <tbody>{renderExpenseList}</tbody>
+    <Table striped bordered hover id="pdf-export">
+      <tbody>
+        {expenseDetails.expenseList.length > 0 ? (
+          renderExpenseList
+        ) : (
+          <h2 className="text-muted">No expenses to show</h2>
+        )}
+      </tbody>
     </Table>
   );
 }

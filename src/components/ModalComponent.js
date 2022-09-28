@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 
 export default function ModalComponent(props) {
   const [newBudget, setNewBudget] = useState("");
-  const { expenseDetails, setExpenseDetails } = useContext(ExpenseContext);
+  const { setExpenseDetails } = useContext(ExpenseContext);
 
   const handleNewBudget = (event) => {
     const value = event.target.value;
@@ -14,14 +14,24 @@ export default function ModalComponent(props) {
   };
 
   const submitNewBudget = () => {
-    setExpenseDetails((prevExpenseDetails) => {
-      return {
-        ...prevExpenseDetails,
-        budget: newBudget,
-      };
-    });
-    props.setShowModal(false);
-    setNewBudget("");
+    if (newBudget !== "") {
+      setExpenseDetails((prevExpenseDetails) => {
+        return {
+          ...prevExpenseDetails,
+          budget: newBudget,
+        };
+      });
+      props.setShowModal(false);
+      setNewBudget("");
+    } else {
+      alert("Please enter a new budget");
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      submitNewBudget();
+    }
   };
 
   return (
@@ -40,6 +50,7 @@ export default function ModalComponent(props) {
             name="newBudget"
             value={newBudget}
             onChange={handleNewBudget}
+            handleKeyPress={handleKeyPress}
             required
           ></Form.Control>
         </Form>

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import ExpenseList from "./ExpenseList";
+import React, { useState } from 'react';
+import { Container } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import ExpenseList from './ExpenseList';
 
 export default function ExpenseListContainer() {
-  const [expenseFilterValue, setExpenseFilterValue] = useState("");
+  const [expenseFilterValue, setExpenseFilterValue] = useState('');
 
   const handleExpenseFilter = (event) => {
     const value = event.target.value;
@@ -15,7 +15,7 @@ export default function ExpenseListContainer() {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="p-4">
       <h3>History</h3>
       <Form>
         <Form.Group controlId="formBasicText">
